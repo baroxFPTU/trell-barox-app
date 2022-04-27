@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
+
+$app-bg-color: #0079bf;
+$app-gap: 10px;
+$app-bar-bg-color: #0067a3;
+
+$column-bg-color: #ebecf0;
+$column-header-height: 36px;
+$column-footer-height: 36px;
+$column-border-radius: 5px;
+
+$card-border-radius: 4px;
+$common-element-bg: rgba(255, 255, 255, 0.25);
+$scrollbar-border-radius: 4px;
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.3rem;
+}
+
+img {
+  width: 100%;
+}
+
+ul, li {
+  list-style-type: none;
+}
+
+.trello-barox-master {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 50px 40px 1fr;
+  background: $app-bg-color;
+
+  .navbar {
+    display: flex;
+    align-items: center;
+    padding-left: $app-gap;
+    &.app {
+      background: $app-bar-bg-color;
+      font-size: 1.5rem;
+    }
+
+    &.board {
+      background: $app-bg-color;
+      font-size: 1.2rem;
+    }
+  }
+
+  .board-columns {
+    display: flex;
+    overflow-x: auto;
+    column-gap: $app-gap;
+    margin: 0 $app-gap $app-gap;
+    
+    &::-webkit-scrollbar {
+      -webkit-appearance: none;
+    }
+
+    &::-webkit-scrollbar:horizontal {
+      height: 11px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $common-element-bg;
+      border-radius: $scrollbar-border-radius;
+    }
+    &::-webkit-scrollbar-track {
+      background-color: darken($common-element-bg, 100);
+      border-radius: $scrollbar-border-radius;
+    }
+
+    .column {
+      flex: 0 0 auto;
+      width: 300px;
+      height: calc(100% - #{$app-gap});
+      > * {
+        background: $column-bg-color;
+        color: #333;
+        padding: 0px 8px;
+      }
+
+      header {
+        height: $column-header-height;
+        line-height: $column-header-height;
+        padding-left: $app-gap;
+        font-size: 16px;
+        font-weight: bold;
+        border-top-left-radius: $column-border-radius;
+        border-top-right-radius: $column-border-radius;
+      }
+
+      footer {
+        height: $column-footer-height;
+        line-height: $column-footer-height;
+        padding-left: $app-gap;
+        border-bottom-left-radius: $column-border-radius;
+        border-bottom-right-radius: $column-border-radius;
+      }
+
+      ul {
+        margin: 0;
+        max-height: calc(100% - #{$column-header-height} - #{$column-footer-height});
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+          -webkit-appearance: none;
+        }
+
+        &::-webkit-scrollbar:vertical {
+          width: 11px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: darken($column-bg-color, 15);
+          border-right: 5px solid $column-bg-color;
+        }
+      }
+      li {
+        background: #fff;
+        padding: $app-gap;
+        border-radius: $card-border-radius;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        &:not(:last-child) {
+          margin-bottom: 10px;
+        }
+
+        img {
+          display: block;
+          border-top-left-radius: $card-border-radius;
+          border-top-right-radius: $card-border-radius;
+          width: calc(100% + 2 * #{$app-gap});
+          margin: -$app-gap $app-gap $app-gap (-$app-gap);
+        }
+      }
+    }
+  }
+}
