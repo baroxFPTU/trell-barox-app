@@ -1,0 +1,9 @@
+@import 'settings';
+
+.navbar-board {
+  display: flex;
+  align-items: center;
+  padding-left: $app-gap;
+  background: $app-bg-color;
+  font-size: 1.2rem;
+}
