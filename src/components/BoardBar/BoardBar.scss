@@ -1,6 +1,8 @@
 @import 'settings';
 
 .navbar-board {
+  height: $navbar-board-height;
+
   display: flex;
   align-items: center;
   padding-left: $app-gap;
