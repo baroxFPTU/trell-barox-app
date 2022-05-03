@@ -8,7 +8,7 @@ export const initialData = {
           id: 'column-1',
           boardId: 'board-1',
           title: 'Todo column',
-          cardOrder: ['card-1', 'card-2', 'card-3'],
+          cardOrder: ['card-1', 'card-2', 'card-3', 'card-10', 'card-12', 'card-11', 'card-13'],
           cards: [
             {
               id: 'card-1', boardId: 'board-1', columnId: 'column-1', title: 'Do something with the card 1', cover: 'https://source.unsplash.com/random'
@@ -18,6 +18,18 @@ export const initialData = {
             },
             {
               id: 'card-3', boardId: 'board-1', columnId: 'column-1', title: 'Do something with the card 3', cover: null
+            },
+            {
+              id: 'card-10', boardId: 'board-1', columnId: 'column-1', title: 'Do something with the card 10', cover: null
+            },
+            {
+              id: 'card-11', boardId: 'board-1', columnId: 'column-1', title: 'Do something with the card 11', cover: null
+            },
+            {
+              id: 'card-12', boardId: 'board-1', columnId: 'column-1', title: 'Do something with the card 12', cover: null
+            },
+            {
+              id: 'card-13', boardId: 'board-1', columnId: 'column-1', title: 'Do something with the card 13', cover: null
             },
           ]
         },

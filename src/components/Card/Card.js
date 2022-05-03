@@ -3,10 +3,10 @@ import './Card.scss';
 
 function Card({card}) {
   return (
-    <li>
-      {card.cover && <img src={card.cover} alt={card.title} />}
+    <div className="card-item">
+      {card.cover && <img src={card.cover} alt={card.title} draggable="false"/>}
       {card.title}
-    </li>
+    </div>
   );
 }
 
