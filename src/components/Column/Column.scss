@@ -63,17 +63,40 @@ $column-border-radius: 5px;
     .card-ghost {
       transition: transform 0.18s ease;
       transform: rotateZ(5deg);
+      font-weight: bold;
     }
     
     .card-ghost-drop{
       transition: transform 0.18s ease-in-out;
       transform: rotateZ(0deg);
+      font-weight: bold;
     }
 
     .card-drop-preview {
       background-color: rgba(150, 150, 200, 0.1);
       border: 1px dashed #abc;
       margin: 5px;
+    }
+  }
+}
+
+.footer-actions {
+  .add-card-btn {
+    -webkit-appearance: none;
+    border: none;
+    font-family: inherit;
+    color: #93a0b7;
+    font-size: 16px;
+    width: 100%;
+    text-align: left;
+    border-radius: $column-border-radius;
+    padding: 5px 5px 5px $app-gap;
+    display: block;
+    transition: $app-simple-transition;
+
+    &:hover {
+      background-color: darken($column-bg-color, 5);
+      color: #667289;
     }
   }
 }
