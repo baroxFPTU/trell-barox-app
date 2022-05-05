@@ -1,10 +1,11 @@
-import Column from 'components/Column/Column'
-import React, { useEffect, useState } from 'react'
-import './BoardContent.scss'
 import { initialData } from 'actions/initialData'
+import Column from 'components/Column/Column'
 import { isEmpty } from 'lodash'
-import { mapOrder } from 'utils/sorts'
+import React, { useEffect, useState } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
+import { applyDrag } from 'utils/main'
+import { mapOrder } from 'utils/sorts'
+import './BoardContent.scss'
 
 function BoardContent() {
   const [board, setBoard] = useState({})
@@ -22,13 +23,26 @@ function BoardContent() {
     return <div>Board is not found.</div>
   }
 
-  // const swapElement = ()
-
   const onColumnDrop = (dropResult) => {
-    const removedIndex = dropResult.removedIndex
-    const addedIndex = dropResult.addedIndex
+    let newColumns = [...columns]
+    let newBoard = { ...board }
 
-    console.log(dropResult);
+    newColumns = applyDrag(newColumns, dropResult)
+    newBoard.columnOrder = newColumns.map(col => col.id)
+    newBoard.columns = [...newColumns]
+
+    setColumns(newColumns)
+    setBoard(newBoard)
+  }
+
+  const onCardDrop = (columnId, dropResult) => {
+    if (dropResult.addedIndex !== null || dropResult.removedIndex !== null) {
+      let newColumns = [...columns]
+      let currentColumn = newColumns.find(col => col.id === columnId)
+      currentColumn.cards = applyDrag(currentColumn.cards, dropResult)
+      currentColumn.cardOrder = currentColumn.cards.map(item => item.id)
+      setColumns(newColumns)
+    }
   }
 
   return (
@@ -46,10 +60,13 @@ function BoardContent() {
       >
         {columns.map((column, index) => (
           <Draggable key={index}>
-            <Column column={column}/>
+            <Column column={column} onCardDrop={onCardDrop}/>
           </Draggable>
         ))}
       </Container>
+      <div className="column">
+        <button className="add-column-btn">+ Add another list</button>
+      </div>
     </div>
   );
 }
