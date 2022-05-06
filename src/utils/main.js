@@ -17,6 +17,19 @@ const applyDrag = (arr, dropResult) => {
   return result
 }
 
+const generateNewColumn = (boardId, title) => {
+  const randomNumber = Math.floor(Math.random() * 100)
+
+  return {
+    id: `column-${randomNumber}`,
+    boardId: boardId,
+    title: title,
+    cardOrder: [],
+    cards: []
+  }
+}
+
 export {
-  applyDrag
+  applyDrag,
+  generateNewColumn
 }

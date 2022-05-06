@@ -9,7 +9,8 @@ $scrollbar-border-radius: 4px;
 
   display: flex;
   overflow-x: auto;
-  
+  padding-right: $app-gap;
+
   &::-webkit-scrollbar {
     -webkit-appearance: none;
   }
