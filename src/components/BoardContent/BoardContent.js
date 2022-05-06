@@ -1,21 +1,28 @@
 import { initialData } from 'actions/initialData'
 import Column from 'components/Column/Column'
+import FormAddColumn from 'components/FormAddColumn/FormAddColumn'
+import { KEEPER_INPUT_ADD_NEW_COL } from 'constants/localStorage'
 import { isEmpty } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
-import { applyDrag } from 'utils/main'
+import { applyDrag, generateNewColumn } from 'utils/main'
 import { mapOrder } from 'utils/sorts'
 import './BoardContent.scss'
 
 function BoardContent() {
   const [board, setBoard] = useState({})
   const [columns, setColumns] = useState([])
+  const [isAdding, setIsAdding] = useState(false)
 
   useEffect(() =>{
     const boardFromDB = initialData.boards.find(board => board.id === 'board-1')
     if (boardFromDB) {
       setBoard(boardFromDB)
       setColumns(mapOrder(boardFromDB.columns, boardFromDB.columnOrder, 'id'))
+    }
+
+    return () => {
+      localStorage.removeItem(KEEPER_INPUT_ADD_NEW_COL)
     }
   }, [])
 
@@ -45,6 +52,26 @@ function BoardContent() {
     }
   }
 
+  const handleOpenForm = () => {
+    setIsAdding(true)
+  }
+
+  const handleCloseForm = () => {
+    setIsAdding(false)
+  }
+
+  const handleAddColumn = (inputVal, resetForm) => {
+    const newBoard = {...board}
+    const newColumns = [...columns]
+    const newColumn = generateNewColumn(board.id, inputVal)
+
+    newColumns.push(newColumn)
+    newBoard.columnOrder = newColumns.map(col => col.id)
+
+    setColumns(newColumns)
+    setBoard(newBoard)
+  }
+
   return (
     <div className="board-columns">
       <Container
@@ -65,7 +92,8 @@ function BoardContent() {
         ))}
       </Container>
       <div className="column">
-        <button className="add-column-btn">+ Add another list</button>
+        {!isAdding && <button className="add-column-btn" onClick={handleOpenForm}>+ Add another list</button>}
+        {isAdding && <FormAddColumn onSubmit={handleAddColumn} onClose={handleCloseForm}/>}
       </div>
     </div>
   );

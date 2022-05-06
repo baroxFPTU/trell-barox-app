@@ -93,7 +93,6 @@ $column-border-radius: 5px;
     padding: 5px 5px 5px $app-gap;
     display: block;
     transition: $app-simple-transition;
-
     &:hover {
       background-color: darken($column-bg-color, 5);
       color: #667289;

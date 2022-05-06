@@ -1,3 +1,7 @@
+export const INITIAL_COLUMN_DATA = {
+  
+}
+
 export const initialData = {
   boards: [
     {
@@ -66,5 +70,5 @@ export const initialData = {
         }
       ]
     }
-  ],
+  ]
 }

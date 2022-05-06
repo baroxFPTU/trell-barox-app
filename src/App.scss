@@ -19,3 +19,44 @@ ul, li {
   height: 100vh;
   background: $app-bg-color;
 }
+
+button {
+  cursor: pointer;
+}
+
+input {
+  border: 2px solid #ddd;
+  outline: none;
+
+  padding: 8px 10px;
+  font-size: 15px;
+
+  border-radius: 4px;
+  color: #333;
+
+  font-family: inherit;
+
+  &:focus {
+    border: 2px solid $app-bg-color;
+  }
+}
+
+.btn {
+  -webkit-appearance: none;
+  border: none;
+  outline: none;
+}
+
+.btn-primary {
+  padding: 7px 15px;
+  min-width: 70px;
+  border-radius: 4px;
+  background: $app-bg-color;
+  font-family: inherit;
+  font-size: 15px;
+  color: #fff;
+  transition: $app-simple-transition;
+  &:hover {
+    background: darken($app-bg-color, 10);
+  }
+}
