@@ -1,14 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
 
 $app-gap: 10px;
-$app-bg-color: #0079bf;
-$app-bar-bg-color: #0067a3;
 $app-simple-transition: all 0.2s ease-in-out;
 $app-border-radius: 5px;
+
+$app-bar-bg-color: #0067a3;
+$column-bg-color: #ebecf0;
+$app-bg-color: #0079bf;
+$common-element-bg: rgba(255, 255, 255, 0.25);
+
+$input-focus-border: 2px solid $app-bg-color;
 
 $navbar-app-height: 5vh;
 $navbar-board-height: 6vh;
 $scrollbar-app-height: 1vh;
 $board-content-height: calc(100vh - #{$navbar-app-height} - #{$navbar-board-height} - #{$scrollbar-app-height});
 
-$common-element-bg: rgba(255, 255, 255, 0.25);

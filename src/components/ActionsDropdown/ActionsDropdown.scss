@@ -1,0 +1,30 @@
+@import "settings";
+
+#dropdown-basic {
+  background: $column-bg-color;
+  border: none;
+  color: #333;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  padding: 5px $app-gap;
+  min-width: fit-content;
+
+ &:focus {
+  outline: none;
+  border: none;
+  box-shadow: none;
+ }
+
+ &:hover {
+   background: darken($column-bg-color, 10);
+ }
+
+ &::after {
+   content: "";
+   display: none;
+ }
+}

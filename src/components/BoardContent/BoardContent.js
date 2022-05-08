@@ -14,7 +14,7 @@ function BoardContent() {
   const [columns, setColumns] = useState([])
   const [isAdding, setIsAdding] = useState(false)
 
-  useEffect(() =>{
+  useEffect(() => {
     const boardFromDB = initialData.boards.find(board => board.id === 'board-1')
     if (boardFromDB) {
       setBoard(boardFromDB)
@@ -60,14 +60,36 @@ function BoardContent() {
     setIsAdding(false)
   }
 
-  const handleAddColumn = (inputVal, resetForm) => {
-    const newBoard = {...board}
+  const handleAddColumn = (inputVal) => {
+    const newBoard = { ...board }
     const newColumns = [...columns]
     const newColumn = generateNewColumn(board.id, inputVal)
 
     newColumns.push(newColumn)
     newBoard.columnOrder = newColumns.map(col => col.id)
 
+    setColumns(newColumns)
+    setBoard(newBoard)
+  }
+
+  const updateColumn = (newColumn) => {
+    const columnIdToUpdate = newColumn.id
+
+    if (!columnIdToUpdate) return
+
+    const newBoard = { ...board }
+    const newColumns = [...columns]
+    const columnIndex = newColumns.findIndex(column => column.id === columnIdToUpdate)
+
+    if (newColumn._destroy) {
+      //Remove
+      newColumns.splice(columnIndex, 1)
+    } else {
+      //Update
+      newColumns.splice(columnIndex, 1, newColumn)
+    }
+
+    newBoard.columnOrder = newColumns.map(col => col.id)
     setColumns(newColumns)
     setBoard(newBoard)
   }
@@ -87,7 +109,7 @@ function BoardContent() {
       >
         {columns.map((column, index) => (
           <Draggable key={index}>
-            <Column column={column} onCardDrop={onCardDrop}/>
+            <Column column={column} onCardDrop={onCardDrop} onUpdateColumn={updateColumn}/>
           </Draggable>
         ))}
       </Container>
@@ -96,7 +118,7 @@ function BoardContent() {
         {isAdding && <FormAddColumn onSubmit={handleAddColumn} onClose={handleCloseForm}/>}
       </div>
     </div>
-  );
+  )
 }
 
 export default BoardContent
