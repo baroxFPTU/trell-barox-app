@@ -60,3 +60,20 @@ input {
     background: darken($app-bg-color, 10);
   }
 }
+
+.trello-content-editable {
+  cursor: pointer;
+  background: inherit;
+  border: none;
+  font-size: inherit;
+  font-weight: inherit;
+  padding: inherit;
+  transition: $app-simple-transition;
+  
+  &:focus {
+    background: white;
+    border: $input-focus-border;
+    padding: 5px;
+    line-height: 1;
+  }
+}
