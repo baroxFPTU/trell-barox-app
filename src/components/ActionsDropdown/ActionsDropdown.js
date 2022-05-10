@@ -10,11 +10,11 @@ function ActionsDropdown(props) {
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Add ...</Dropdown.Item>
+        <Dropdown.Item onClick={props.onAdd}>Add ...</Dropdown.Item>
         <Dropdown.Item onClick={props.onRemove}>Achive ...</Dropdown.Item>
         <Dropdown.Item href="#/action-3">Something else ...</Dropdown.Item>
       </Dropdown.Menu>
-  </Dropdown>
+    </Dropdown>
   )
 }
 

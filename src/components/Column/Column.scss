@@ -7,7 +7,7 @@ $column-border-radius: 5px;
 .column {
   flex: 0 0 auto;
   width: 300px;
-  height: calc(#{$board-content-height} - 2*#{$app-gap});
+  height: calc(#{$board-content-height} - 2*#{$app-gap} - 5px);
   margin-left: $app_gap;
 
   > * {
@@ -35,9 +35,8 @@ $column-border-radius: 5px;
   }
 
   footer {
-    height: $column-footer-height;
-    line-height: $column-footer-height;
     padding-left: $app-gap;
+    padding-bottom: $app-gap;
     border-bottom-left-radius: $column-border-radius;
     border-bottom-right-radius: $column-border-radius;
     display: block;

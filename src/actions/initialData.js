@@ -34,7 +34,7 @@ export const initialData = {
             },
             {
               id: 'card-13', boardId: 'board-1', columnId: 'column-1', title: 'Do something with the card 13', cover: null
-            },
+            }
           ]
         },
         {

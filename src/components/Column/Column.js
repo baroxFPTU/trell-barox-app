@@ -1,8 +1,13 @@
 import ActionsDropdown from 'components/ActionsDropdown/ActionsDropdown'
 import Card from 'components/Card/Card'
 import ConfirmModal from 'components/Common/ConfirmModal'
+import FormAddCard from 'components/FormAddCard/FormAddCard'
+import useToggle from 'hooks/useToggle'
+import { cloneDeep } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
+import { saveAllChangeOnEnter, selectAllInsideText } from 'utils/contentEditable'
+import { generateNewCard } from 'utils/main'
 import './Column.scss'
 
 function Column(props) {
@@ -11,6 +16,7 @@ function Column(props) {
   const [showModal, setShowModal] = useState(false)
   const [columnTitle, setColumnTitle] = useState('')
   const toggleShowModal = () => setShowModal(!showModal)
+  const [isShowForm, toggleShowForm] = useToggle()
 
   useEffect(() => {
     setColumnTitle(column.title)
@@ -32,12 +38,6 @@ function Column(props) {
     toggleShowModal()
   }
 
-  const selectAllInsideText = (e) => {
-    e.preventDefault()
-    e.target.focus()
-    e.target.select()
-  }
-
   const changeColumnTitle = (e) => {
     setColumnTitle(e.target.value)
   }
@@ -51,10 +51,12 @@ function Column(props) {
     onUpdateColumn(newColumn)
   }
 
-  const saveAllChangeOnEnter = (e) => {
-    if (e.key === 'Enter') {
-      e.target.blur()
-    }
+  const updateCard = (newCardTitle) => {
+    const newColumn = cloneDeep(column)
+    const newCard = generateNewCard(column.boardId, column.id, newCardTitle)
+    newColumn.cards.push(newCard)
+    newColumn.cardOrder.push(newCard.id)
+    onUpdateColumn(newColumn)
   }
 
   return (
@@ -73,7 +75,7 @@ function Column(props) {
           />
         </div>
         <div className="column-actions">
-          <ActionsDropdown onRemove={toggleShowModal}/>
+          <ActionsDropdown onRemove={toggleShowModal} onAdd={toggleShowForm}/>
         </div>
       </header>
       <div className="card-list">
@@ -96,11 +98,12 @@ function Column(props) {
             </Draggable>
           ))}
         </Container>
+        {isShowForm && <Card as={FormAddCard} onClose={toggleShowForm} onAddNew={updateCard}/>}
       </div>
-      <footer className="card-footer">
-        <div className="footer-actions">
-          <button className="add-card-btn">+ Add a card</button>
-        </div>
+      <footer>
+        {!isShowForm && <div className="footer-actions">
+          <button className="add-card-btn" onClick={toggleShowForm}>+ Add a card</button>
+        </div>}
       </footer>
       <ConfirmModal
         title={'Xoa column'}
