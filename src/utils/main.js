@@ -1,7 +1,7 @@
 const applyDrag = (arr, dropResult) => {
   const { removedIndex, addedIndex, payload } = dropResult
 
-  if (removedIndex === null && addedIndex === null) return arr
+  if (removedIndex === null && addedIndex === null && payload==null) return arr
 
   const result = [...arr]
   let itemToAdd = payload
@@ -29,7 +29,20 @@ const generateNewColumn = (boardId, title) => {
   }
 }
 
+const generateNewCard = (boardId, columnId, title) => {
+  const randomNumber = Math.floor(Math.random() * 100)
+
+  return {
+    id: `card-${randomNumber}`,
+    boardId: boardId,
+    columnId: columnId,
+    title: title,
+    cover: null
+  }
+}
+
 export {
   applyDrag,
-  generateNewColumn
+  generateNewColumn,
+  generateNewCard
 }

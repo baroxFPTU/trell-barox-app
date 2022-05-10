@@ -2,6 +2,7 @@ import { initialData } from 'actions/initialData'
 import Column from 'components/Column/Column'
 import FormAddColumn from 'components/FormAddColumn/FormAddColumn'
 import { KEEPER_INPUT_ADD_NEW_COL } from 'constants/localStorage'
+import useToggle from 'hooks/useToggle'
 import { isEmpty } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
@@ -12,7 +13,8 @@ import './BoardContent.scss'
 function BoardContent() {
   const [board, setBoard] = useState({})
   const [columns, setColumns] = useState([])
-  const [isAdding, setIsAdding] = useState(false)
+  // const [isAdding, setIsAdding] = useState(false)
+  const [isShowForm, toggleShowForm] = useToggle()
 
   useEffect(() => {
     const boardFromDB = initialData.boards.find(board => board.id === 'board-1')
@@ -33,7 +35,6 @@ function BoardContent() {
   const onColumnDrop = (dropResult) => {
     let newColumns = [...columns]
     let newBoard = { ...board }
-
     newColumns = applyDrag(newColumns, dropResult)
     newBoard.columnOrder = newColumns.map(col => col.id)
     newBoard.columns = [...newColumns]
@@ -53,11 +54,11 @@ function BoardContent() {
   }
 
   const handleOpenForm = () => {
-    setIsAdding(true)
+    toggleShowForm(true)
   }
 
   const handleCloseForm = () => {
-    setIsAdding(false)
+    toggleShowForm(false)
   }
 
   const handleAddColumn = (inputVal) => {
@@ -74,7 +75,6 @@ function BoardContent() {
 
   const updateColumn = (newColumn) => {
     const columnIdToUpdate = newColumn.id
-
     if (!columnIdToUpdate) return
 
     const newBoard = { ...board }
@@ -93,7 +93,6 @@ function BoardContent() {
     setColumns(newColumns)
     setBoard(newBoard)
   }
-
   return (
     <div className="board-columns">
       <Container
@@ -109,13 +108,17 @@ function BoardContent() {
       >
         {columns.map((column, index) => (
           <Draggable key={index}>
-            <Column column={column} onCardDrop={onCardDrop} onUpdateColumn={updateColumn}/>
+            <Column
+              column={column}
+              onCardDrop={onCardDrop}
+              onUpdateColumn={updateColumn}
+            />
           </Draggable>
         ))}
       </Container>
       <div className="column">
-        {!isAdding && <button className="add-column-btn" onClick={handleOpenForm}>+ Add another list</button>}
-        {isAdding && <FormAddColumn onSubmit={handleAddColumn} onClose={handleCloseForm}/>}
+        {!isShowForm && <button className="add-column-btn" onClick={handleOpenForm}>+ Add another list</button>}
+        {isShowForm && <FormAddColumn onSubmit={handleAddColumn} onClose={handleCloseForm}/>}
       </div>
     </div>
   )

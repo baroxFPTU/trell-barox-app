@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Modal } from 'react-bootstrap'
 
 function ConfirmModal(props) {
-  const {title, content, show, onActions} = props;
+  const { title, content, show, onActions } = props
 
   return (
     <Modal show={show} onHide={onActions} backdrop="static">
@@ -18,7 +18,7 @@ function ConfirmModal(props) {
           Remove
         </Button>
       </Modal.Footer>
-      </Modal>
+    </Modal>
   )
 }
 

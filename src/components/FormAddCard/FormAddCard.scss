@@ -1,0 +1,12 @@
+@import 'settings';
+
+.form-add-card {
+  textarea {
+    border: none;
+    resize: none;
+    padding: 0;
+
+    min-height: 50px;
+    max-height: 260px;
+  }
+}

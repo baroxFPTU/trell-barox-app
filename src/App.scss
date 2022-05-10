@@ -24,7 +24,8 @@ button {
   cursor: pointer;
 }
 
-input {
+input, textarea {
+  width: 100%;
   border: 2px solid #ddd;
   outline: none;
 
