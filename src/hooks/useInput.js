@@ -15,9 +15,9 @@ function useInput(initialValue, onSubmit, inputRef, saveNameLocal) {
       inputRef.current.select()
     }
 
-    return () => {
-      if (saveNameLocal) localStorage.removeItem(saveNameLocal)
-    }
+    // return () => {
+    //   if (saveNameLocal) localStorage.removeItem(saveNameLocal)
+    // }
   }, [])
 
   useEffect(() => {
