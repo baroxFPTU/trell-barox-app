@@ -53,9 +53,9 @@ function Column(props) {
 
   const updateCard = (newCardTitle) => {
     const newColumn = cloneDeep(column)
-    const newCard = generateNewCard(column.boardId, column.id, newCardTitle)
+    const newCard = generateNewCard(column.boardId, column._id, newCardTitle)
     newColumn.cards.push(newCard)
-    newColumn.cardOrder.push(newCard.id)
+    newColumn.cardOrder.push(newCard._id)
     onUpdateColumn(newColumn)
   }
 
@@ -81,7 +81,7 @@ function Column(props) {
       <div className="card-list">
         <Container
           groupName="col"
-          onDrop={dropResult => props.onCardDrop(column.id, dropResult)}
+          onDrop={dropResult => props.onCardDrop(column._id, dropResult)}
           getChildPayload={index => cards[index]}
           dragClass="card-ghost"
           dropClass="card-ghost-drop"

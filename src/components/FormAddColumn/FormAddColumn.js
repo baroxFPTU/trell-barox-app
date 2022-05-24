@@ -1,4 +1,4 @@
-import { KEEPER_INPUT_ADD_NEW_COL } from 'constants/localStorage'
+import { KEEPER_INPUT_ADD_NEW_COL } from 'utils/constants'
 import useInput from 'hooks/useInput'
 import React, { useEffect, useRef, useState } from 'react'
 import './FormAddColumn.scss'
