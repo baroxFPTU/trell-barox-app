@@ -17,27 +17,29 @@ const applyDrag = (arr, dropResult) => {
   return result
 }
 
+/**
+ * @param {String} boardId
+ * @param {String} title
+ * @returns {Object} boardId, title
+ */
 const generateNewColumn = (boardId, title) => {
-  const randomNumber = Math.floor(Math.random() * 100)
-
   return {
-    id: `column-${randomNumber}`,
     boardId: boardId,
-    title: title,
-    cardOrder: [],
-    cards: []
+    title: title
   }
 }
 
+/**
+ * @param {String} boardId
+ * @param {String} columnId
+ * @param {String} title
+ * @returns boardId, columnId, title
+ */
 const generateNewCard = (boardId, columnId, title) => {
-  const randomNumber = Math.floor(Math.random() * 100)
-
   return {
-    id: `card-${randomNumber}`,
     boardId: boardId,
     columnId: columnId,
-    title: title,
-    cover: null
+    title: title
   }
 }
 

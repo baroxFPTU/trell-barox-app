@@ -1,4 +1,3 @@
-import { initialData } from 'actions/initialData'
 import Column from 'components/Column/Column'
 import FormAddColumn from 'components/FormAddColumn/FormAddColumn'
 import { KEEPER_INPUT_ADD_NEW_COL } from 'utils/constants'
@@ -9,7 +8,7 @@ import { Container, Draggable } from 'react-smooth-dnd'
 import { applyDrag, generateNewColumn } from 'utils/main'
 import { mapOrder } from 'utils/sorts'
 import './BoardContent.scss'
-import { getBoardFromDB } from 'actions/api'
+import { BoardAPIs, ColumnAPIs } from 'actions/api'
 
 function BoardContent() {
   const [board, setBoard] = useState({})
@@ -18,7 +17,7 @@ function BoardContent() {
 
   useEffect(() => {
     const boardId = '628310456c0ad2c3cbb9aa92'
-    getBoardFromDB(boardId)
+    BoardAPIs.getAll(boardId)
       .then(board => {
         setBoard(board)
         setColumns(mapOrder(board.columns, board.columnOrder, '_id'))
@@ -62,16 +61,21 @@ function BoardContent() {
     toggleShowForm(false)
   }
 
-  const handleAddColumn = (inputVal) => {
+  const handleAddColumn = async (title) => {
     const newBoard = { ...board }
     const newColumns = [...columns]
-    const newColumn = generateNewColumn(board._id, inputVal)
+    const newColumn = generateNewColumn(board._id, title)
 
-    newColumns.push(newColumn)
-    newBoard.columnOrder = newColumns.map(col => col._id)
+    try {
+      const createdColumn = await ColumnAPIs.createNew(newColumn)
+      newColumns.push(createdColumn)
+      newBoard.columnOrder = newColumns.map(col => col._id)
 
-    setColumns(newColumns)
-    setBoard(newBoard)
+      setColumns(newColumns)
+      setBoard(newBoard)
+    } catch (error) {
+      console.error(error.message)
+    }
   }
 
   const updateColumn = (newColumn) => {
@@ -94,7 +98,7 @@ function BoardContent() {
     setColumns(newColumns)
     setBoard(newBoard)
   }
-  
+
   return (
     <div className="board-columns">
       <Container

@@ -1,3 +1,4 @@
+import { CardAPIs, ColumnAPIs } from 'actions/api'
 import ActionsDropdown from 'components/ActionsDropdown/ActionsDropdown'
 import Card from 'components/Card/Card'
 import ConfirmModal from 'components/Common/ConfirmModal'
@@ -22,7 +23,7 @@ function Column(props) {
     setColumnTitle(column.title)
   }, [column.title])
 
-  const handleActionsOnModal = (type) => {
+  const handleActionsOnModal = async (type) => {
     switch (type) {
     case 'confirm': {
       const newColumn = {
@@ -30,7 +31,8 @@ function Column(props) {
         _destroy: true
       }
 
-      onUpdateColumn(newColumn)
+      const updatedColumn = await ColumnAPIs.update(newColumn._id, newColumn)
+      onUpdateColumn(updatedColumn)
       break
     }
     }
@@ -42,25 +44,34 @@ function Column(props) {
     setColumnTitle(e.target.value)
   }
 
-  const updateColumnTitle = () => {
+  const updateColumnTitle = async () => {
     const newColumn = {
       ...column,
-      title: columnTitle
+      title: columnTitle.trim()
     }
 
-    onUpdateColumn(newColumn)
+    if (newColumn.title !== column.title) {
+      const updatedColumn = await ColumnAPIs.update(newColumn._id, newColumn)
+      updatedColumn.cards = [...newColumn.cards]
+      onUpdateColumn(updatedColumn)
+    }
   }
 
   const updateCard = (newCardTitle) => {
     const newColumn = cloneDeep(column)
     const newCard = generateNewCard(column.boardId, column._id, newCardTitle)
-    newColumn.cards.push(newCard)
-    newColumn.cardOrder.push(newCard._id)
-    onUpdateColumn(newColumn)
+
+    CardAPIs.createNew(newCard).then(createdCard => {
+      newColumn.cards.push(createdCard)
+      newColumn.cardOrder.push(createdCard._id)
+      onUpdateColumn(newColumn)
+    }).catch(error => {
+      console.log(error.message)
+    })
   }
 
   return (
-    <div className="column ">
+    <div className="column">
       <header className='column-drag-handle'>
         <div className="column-title">
           <input
