@@ -11,6 +11,12 @@ function FormAddCard(props) {
     onAddNew(value)
   }
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit()
+    }
+  }
+
   return (
     <>
       <div className={`${className} form-add-card`}>
@@ -21,6 +27,7 @@ function FormAddCard(props) {
           value={inputVal}
           onChange={handleChange}
           ref={inputRef}
+          onKeyDown={handleKeyDown}
         />
       </div>
       <div className="group-actions">
