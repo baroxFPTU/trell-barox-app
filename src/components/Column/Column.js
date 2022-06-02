@@ -9,11 +9,12 @@ import React, { useEffect, useState } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
 import { saveAllChangeOnEnter, selectAllInsideText } from 'utils/contentEditable'
 import { generateNewCard } from 'utils/main'
+import { mapOrder } from 'utils/sorts'
 import './Column.scss'
 
 function Column(props) {
   const { column, onUpdateColumn } = props
-  const cards = column.cards
+  const cards = mapOrder(column.cards, column.cardOrder, '_id')
   const [showModal, setShowModal] = useState(false)
   const [columnTitle, setColumnTitle] = useState('')
   const toggleShowModal = () => setShowModal(!showModal)
@@ -50,24 +51,30 @@ function Column(props) {
       title: columnTitle.trim()
     }
 
-    if (newColumn.title !== column.title) {
-      const updatedColumn = await ColumnAPIs.update(newColumn._id, newColumn)
-      updatedColumn.cards = [...newColumn.cards]
-      onUpdateColumn(updatedColumn)
+    if (newColumn.title === column.title) return
+
+    onUpdateColumn(newColumn)
+    try {
+      // const updatedColumn = 
+      await ColumnAPIs.update(newColumn._id, newColumn)
+      // updatedColumn.cards = [...newColumn.cards]
+    } catch (error) {
+      onUpdateColumn(column)
+      // TODO: show error messgage to user
     }
   }
 
-  const updateCard = (newCardTitle) => {
+  const updateCard = async (newCardTitle) => {
     const newColumn = cloneDeep(column)
     const newCard = generateNewCard(column.boardId, column._id, newCardTitle)
-
-    CardAPIs.createNew(newCard).then(createdCard => {
+    try {
+      const createdCard = await CardAPIs.createNew(newCard)
       newColumn.cards.push(createdCard)
       newColumn.cardOrder.push(createdCard._id)
       onUpdateColumn(newColumn)
-    }).catch(error => {
+    } catch (error) {
       console.log(error.message)
-    })
+    }
   }
 
   return (
