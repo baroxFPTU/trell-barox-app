@@ -1,9 +1,11 @@
+import { cloneDeep } from 'lodash'
+
 const applyDrag = (arr, dropResult) => {
   const { removedIndex, addedIndex, payload } = dropResult
 
   if (removedIndex === null && addedIndex === null && payload==null) return arr
 
-  const result = [...arr]
+  const result = cloneDeep(arr)
   let itemToAdd = payload
 
   if (removedIndex !== null) {

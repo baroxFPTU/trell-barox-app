@@ -2,13 +2,13 @@ import Column from 'components/Column/Column'
 import FormAddColumn from 'components/FormAddColumn/FormAddColumn'
 import { KEEPER_INPUT_ADD_NEW_COL } from 'utils/constants'
 import useToggle from 'hooks/useToggle'
-import { isEmpty } from 'lodash'
+import { isEmpty, cloneDeep, isEqual } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { Container, Draggable } from 'react-smooth-dnd'
 import { applyDrag, generateNewColumn } from 'utils/main'
 import { mapOrder } from 'utils/sorts'
 import './BoardContent.scss'
-import { BoardAPIs, ColumnAPIs } from 'actions/api'
+import { BoardAPIs, CardAPIs, ColumnAPIs } from 'actions/api'
 
 function BoardContent() {
   const [board, setBoard] = useState({})
@@ -32,24 +32,58 @@ function BoardContent() {
     return <div>Board is not found.</div>
   }
 
-  const onColumnDrop = (dropResult) => {
-    let newColumns = [...columns]
-    let newBoard = { ...board }
+  const onColumnDrop = async (dropResult) => {
+    let newColumns = cloneDeep(columns)
+    let newBoard = cloneDeep(board)
     newColumns = applyDrag(newColumns, dropResult)
     newBoard.columnOrder = newColumns.map(col => col._id)
     newBoard.columns = [...newColumns]
 
+    if (isEqual(newBoard.columnOrder, board.columnOrder)) return
+
     setColumns(newColumns)
     setBoard(newBoard)
+    try {
+      await BoardAPIs.update(newBoard._id, newBoard)
+    } catch (error) {
+      setColumns(columns)
+      setBoard(board)
+      //TODO: show error message to user
+    }
   }
 
-  const onCardDrop = (columnId, dropResult) => {
+  const onCardDrop = async (columnId, dropResult) => {
     if (dropResult.addedIndex !== null || dropResult.removedIndex !== null) {
-      let newColumns = [...columns]
+      if (dropResult.addedIndex === dropResult.removedIndex) { return}
+
+      let newColumns = [...columns] // use cloneDeep make bug
       let currentColumn = newColumns.find(col => col._id === columnId)
       currentColumn.cards = applyDrag(currentColumn.cards, dropResult)
       currentColumn.cardOrder = currentColumn.cards.map(item => item._id)
       setColumns(newColumns)
+      try {
+        if (dropResult.addedIndex !== null && dropResult.removedIndex !== null) {
+          await ColumnAPIs.update(columnId, currentColumn)
+        } else {
+          const updateColumn = {
+            ...currentColumn
+          }
+          if (dropResult.addedIndex !== null) {
+            const currentCard = cloneDeep(dropResult.payload)
+            // currentCard.columnId = currentColumn._id
+            updateColumn._cardId = currentCard._id
+            // await CardAPIs.update(currentCard._id, { columnId: currentColumn._id })
+          }
+          console.log(updateColumn);
+
+          await ColumnAPIs.update(columnId, updateColumn)
+        }
+      } catch (error) {
+        //TODO: Show error message to users
+        console.error(error.message)
+        setColumns(columns)
+      }
+
     }
   }
 
